@@ -7,9 +7,19 @@ import (
 	"time"
 )
 
+type ClientCredentials struct {
+	ClientID     string
+	ClientSecret string
+}
+
+type GhlProperties struct {
+	CompanyCredentials  ClientCredentials
+	LocationCredentials ClientCredentials
+}
+
 type Config struct {
 	ShopifyAPIToken string
-	GHLAPIKey       string
+	GHL             GhlProperties
 	TiktokAPIKey    string
 	MysqlDSN        string
 	// Add other configuration fields as needed
@@ -25,9 +35,18 @@ func LoadConfig() *Config {
 
 	config := &Config{
 		ShopifyAPIToken: getEnv("SHOPIFY_API_TOKEN", ""),
-		GHLAPIKey:       getEnv("GHL_API_KEY", ""),
-		TiktokAPIKey:    getEnv("TIKTOK_API_KEY", ""),
-		MysqlDSN:        getEnv("MYSQL_DSN", ""),
+		GHL: GhlProperties{
+			CompanyCredentials: ClientCredentials{
+				ClientID:     getEnv("GHL_COMPANY_CLIENT_ID", ""),
+				ClientSecret: getEnv("GHL_COMPANY_CLIENT_SECRET", ""),
+			},
+			LocationCredentials: ClientCredentials{
+				ClientID:     getEnv("GHL_LOCATION_CLIENT_ID", ""),
+				ClientSecret: getEnv("GHL_LOCATION_CLIENT_SECRET", ""),
+			},
+		},
+		TiktokAPIKey: getEnv("TIKTOK_API_KEY", ""),
+		MysqlDSN:     getEnv("MYSQL_DSN", ""),
 	}
 
 	//log.Printf("Loaded configuration %s", config)
