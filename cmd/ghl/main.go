@@ -41,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
-	err = db.AutoMigrate(&models.GhlTokens{})
+	err = db.AutoMigrate(&models.GhlTokens{}, &models.GhlOrder{})
 	if err != nil {
 		log.Fatalf("Error runnning migration: %v", err)
 	}
